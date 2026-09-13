@@ -20,17 +20,12 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests(auth ->
                         auth
-                                .requestMatchers("/api/todos/**").authenticated()
+                                .requestMatchers("/api/todos/**", "/api/users/me").authenticated()
                                 .requestMatchers("/api/users/register").permitAll())
                 .formLogin(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .build();
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService(DataSource dataSource) {
-        return new JdbcUserDetailsManager(dataSource);
     }
 
     @Bean

@@ -67,6 +67,9 @@ public class UserService {
     }
 
     public void deleteUser(String name) {
+        User user = userRepository.findByUsername(name)
+                .orElseThrow(() -> new UserAlreadyExistsException("User not found"));
 
+        userRepository.delete(user);
     }
 }
