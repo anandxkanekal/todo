@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "users")
 @Getter
@@ -26,6 +28,9 @@ public class User {
     @Column(nullable = false)
     private boolean enabled;
 
-    @Column(nullable = false)
-    private String role;
+    /*@Column(nullable = false)
+    private String role;*/
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Authority> authorities;
 }
