@@ -4,11 +4,14 @@ import com.example.todo.dto.CreateUserRequest;
 import com.example.todo.dto.UpdateUserRequest;
 import com.example.todo.dto.UserResponse;
 import com.example.todo.exception.UserAlreadyExistsException;
+import com.example.todo.model.Authority;
 import com.example.todo.model.User;
 import com.example.todo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +37,10 @@ public class UserService {
         user.setEmail(createUserRequest.getEmail());
         user.setPassword(passwordEncoder.encode(createUserRequest.getPassword()));
         user.setEnabled(true);
-        user.setRole("ROLE_USER"); // Default role
+        user.setAuthorities(Set.of(new Authority() {{
+            setName("ROLE_USER");
+            setUser(user);
+        }}));
 
         User savedUser = userRepository.save(user);
 
