@@ -22,7 +22,7 @@ public class TodoUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
-        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(user.getRole()));
+        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(user.getAuthorities()));
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
     }
 }
