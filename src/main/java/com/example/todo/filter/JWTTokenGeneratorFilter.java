@@ -1,8 +1,6 @@
+/*
 package com.example.todo.filter;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
-import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,7 +24,7 @@ public class JWTTokenGeneratorFilter extends OncePerRequestFilter {
             Environment env = getEnvironment();
 
             if (env != null) {
-                String secret = env.getProperty("jwt.secret");
+                String secret = env.getProperty("JWT_SECRET");
                 SecretKey key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
                 String jwt = Jwts.builder().issuer("TodoApp")
                         .setSubject("Todo")
@@ -37,7 +35,7 @@ public class JWTTokenGeneratorFilter extends OncePerRequestFilter {
                         .signWith(key)
                         .compact();
 
-                response.setHeader("Authorization", "Bearer " + jwt);
+                response.setHeader("JWT_SECRET", "Bearer " + jwt);
             }
         }
 
@@ -49,3 +47,4 @@ public class JWTTokenGeneratorFilter extends OncePerRequestFilter {
         return super.shouldNotFilter(request);
     }
 }
+*/

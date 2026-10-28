@@ -1,8 +1,6 @@
+/*
 package com.example.todo.filter;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,13 +27,13 @@ public class JWTTokenValidatorFilter extends OncePerRequestFilter {
                 Environment env = getEnvironment();
 
                 if (env != null) {
-                    String secret = env.getProperty("jwt.secret");
+                    String secret = env.getProperty("JWT_SECRET");
                     SecretKey key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
 
                     if (key != null) {
                         Claims claims = Jwts.parser().verifyWith(key).build().parseClaimsJws(jwt.replace("Bearer ", "")).getPayload();
-                        String username = claims.get("username", String.class);
-                        String authorities = claims.get("authorities", String.class);
+                        String username = String.valueOf(claims.get("username"));
+                        String authorities = String.valueOf(claims.get("authorities"));
 
                         Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, AuthorityUtils.commaSeparatedStringToAuthorityList(authorities));
                         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -48,6 +46,8 @@ public class JWTTokenValidatorFilter extends OncePerRequestFilter {
             }
         }
 
+        filterChain.doFilter(request, response);
+
     }
 
     @Override
@@ -55,3 +55,4 @@ public class JWTTokenValidatorFilter extends OncePerRequestFilter {
         return super.shouldNotFilter(request);
     }
 }
+*/

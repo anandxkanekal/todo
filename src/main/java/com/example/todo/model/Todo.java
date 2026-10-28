@@ -29,4 +29,8 @@ public class Todo {
 
     @Column
     private LocalDateTime dueDate;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }

@@ -5,24 +5,37 @@ import com.example.todo.dto.CreateTodoRequest;
 import com.example.todo.dto.TodoResponse;
 import com.example.todo.exception.TodoNotFoundException;
 import com.example.todo.model.Todo;
+import com.example.todo.model.User;
 import com.example.todo.repository.TodoRepository;
+import com.example.todo.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class TodoService {
 
+    private final UserRepository userRepository;
+
     private final TodoRepository todoRepository;
 
     @Transactional
     public TodoResponse createTodo(CreateTodoRequest createTodoRequest) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
         Todo todo = new Todo();
         todo.setTitle(createTodoRequest.getTitle());
         todo.setDescription(createTodoRequest.getDescription());
         todo.setDueDate(createTodoRequest.getDueDate());
         todo.setStatus(TodoStatus.NEW);
+        todo.setUser(user);
         Todo savedTodo = todoRepository.save(todo);
 
         TodoResponse todoResponse = new TodoResponse();
